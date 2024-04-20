@@ -8,6 +8,8 @@ const SignUp = () => {
             src={logo}
             className='object-contain w-32 opacity-50 h-auto'
             alt=""
+
+            
         />
 
         <div>
