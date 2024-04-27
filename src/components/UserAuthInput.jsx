@@ -15,6 +15,7 @@ const UserAuthInput = ({label, placeHolder, isPass, key, setStateFunction, Icon,
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ ;
             const status = emailRegex.test(value);
             setIsValid(status);
+            setGetEmailValidationStatus(status);
         }
     }
 
