@@ -21,10 +21,10 @@ const SignUp = () => {
             alt=""
         />
 
-        <div className=' w-full flex flex-col items-center justify-center py-8'>
-          <p className=' py-12 text-2xl text-primaryText'>Join With Us!</p>
+        <div className=' w-full flex flex-col items-center justify-center py-2'>
+          <p className=' py-6 text-2xl text-primaryText'>Join With Us!</p>
           
-          <div className=' px-8 w-full md:w-auto py-4 rounded-xl bg-secondary shadow-md flex flex-col items-center justify-center gap-8'>
+          <div className=' px-8 w-full md:w-auto py-4 rounded-xl bg-secondary shadow-md flex flex-col items-center justify-center gap-6'>
             {/* email */}
               <UserAuthInput label="Email" placeHolder="Type Email Here" isPass={false} key="Email" setGetEmailValidationStatus={setGetEmailValidationStatus} setStateFunction={setEmail} Icon={FaEnvelope}  />
 
