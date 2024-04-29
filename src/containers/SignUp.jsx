@@ -13,6 +13,7 @@ const SignUp = () => {
   const [getEmailValidationStatus, setGetEmailValidationStatus] = useState(false);
   const [isLogin, setIsLogin] = useState(false)
 
+
   return (
     <div className='w-full py-6 '>
         <img 
