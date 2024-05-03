@@ -43,6 +43,8 @@ const SignUp = () => {
               </motion.div>
               )}
 
+
+
             {/* account text */}  
 
               {!isLogin ? (<p className='text-sm text-primaryText flex items-center justify-center gap-3'>
