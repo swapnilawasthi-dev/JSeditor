@@ -3,16 +3,60 @@ import logo from '../../public/logo.png'
 import { UserAuthInput } from '../components'
 import { FaEnvelope, FaGithub } from 'react-icons/fa6';
 import { MdPassword } from 'react-icons/md';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FcGoogle } from 'react-icons/fc';
 import { SignINWithGitHub, SignINWithGoogle } from '../utils/helpers';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase.config';
+import { fadeInOut } from '../animations';
 
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [getEmailValidationStatus, setGetEmailValidationStatus] = useState(false);
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [alertMssg, setAlertMssg] = useState("");
+
+  const createNewUser = async () => {
+    if(getEmailValidationStatus){
+      await createUserWithEmailAndPassword(auth, email, password).then(userCred => {
+        if(userCred){
+          console.log(userCred);
+        }
+      })
+      .catch((err) => console.log(err ));
+    }
+  }
+
+
+  const loginWithEmailPassword = async () => {
+    if(getEmailValidationStatus){
+      await signInWithEmailAndPassword(auth, email, password).then((userCred) => {
+        if(userCred){
+          console.log(userCred);
+        }
+      }).catch((err) => {
+        console.log(err);
+        if(err.message.includes("user-not-found")){
+          setAlert(true);
+          setAlertMssg("Invalid Email: User Not Found")
+        }else if(err.message.includes("wrong-password")){
+          setAlert(true);
+          setAlertMssg("Incorrect Password")
+        }else{
+          setAlert(true);
+          setAlertMssg("Temporarily disabled due to many failed Login")
+        }
+
+        setInterval(()=>{
+          setAlert(false);
+
+        }, 4000)
+      });
+    }
+  }
 
 
   return (
@@ -34,12 +78,17 @@ const SignUp = () => {
               <UserAuthInput label="Password" placeHolder="Type Password Here" isPass={true} key="Password" setStateFunction={setPassword} Icon={MdPassword}  />
 
             {/* alert */}
+            <AnimatePresence>
+              {alert &&(
+                <motion.p key={"AlertMessage"} {...fadeInOut} className=' text-red-500'>{alertMssg}</motion.p>
+              )}
+            </AnimatePresence>
 
             {/* login button */}
-              { !isLogin ? (<motion.div whileTap={{scale: 0.95}} className='flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-300'>
+              { !isLogin ? (<motion.div onClick={createNewUser} whileTap={{scale: 0.95}} className='flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-300'>
                 <p className=' text-xl text-white'>Sign Up</p>
               </motion.div>) : (
-                <motion.div whileTap={{scale: 0.95}} className='flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-300'>
+                <motion.div onClick={loginWithEmailPassword} whileTap={{scale: 0.95}} className='flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-300'>
                 <p className=' text-xl text-white'>Login</p>
               </motion.div>
               )}
