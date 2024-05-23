@@ -6,10 +6,13 @@ import { motion } from 'framer-motion';
 import { Link, Route, Routes } from 'react-router-dom';
 import logo from '../../public/logo.png'
 import {Projects, SignUp} from '../containers'
+import { useSelector } from 'react-redux';
+import { UserProfileDetails } from '../components';
 
 const Home = () => {
     const [isSideNav, setIsSideNav] = useState(false);
-    const [user, setUser] = useState(null);
+    const user = useSelector(state => state.user?.user);
+    // const [user, setUser] = useState(null);
 
   return (
     <>
@@ -74,11 +77,7 @@ const Home = () => {
                         )
                     }
 
-                    {user && (
-                        <div>
-
-                        </div>
-                    )}
+                    {user && <UserProfileDetails />}
             </div>
             
 

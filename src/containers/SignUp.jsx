@@ -52,7 +52,6 @@ const SignUp = () => {
 
         setInterval(()=>{
           setAlert(false);
-
         }, 4000)
       });
     }
