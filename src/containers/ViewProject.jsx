@@ -18,17 +18,19 @@ import { useSelector } from "react-redux";
 import { Alert, UserProfileDetails } from "../components";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../config/firebase.config";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const NewProject = () => {
-  const [html, setHtml] = useState("");
-  const [css, setCss] = useState("");
-  const [js, setJs] = useState("");
-  const [output, setOutput] = useState("");
+const ViewProject = () => {
+  const location = useLocation();
+  const { project } = location.state || {};
+  const [html, setHtml] = useState(project?.html);
+  const [css, setCss] = useState(project?.css);
+  const [js, setJs] = useState(project?.js);
+  const [output, setOutput] = useState(project?.output);
   const [isTitle, setIsTitle] = useState("");
-  const [title, setTitle] = useState("Untitled");
+  const [title, setTitle] = useState(project?.title);
   const [alert, setAlert] = useState(false);
-  const user = useSelector((state) => state.user?.user);
+  const user = project?.user;
 
   const navigate = useNavigate();
 
@@ -36,28 +38,28 @@ const NewProject = () => {
     updateOutput();
   }, [html, css, js]);
 
-  const saveProgram = async () => {
-    const id = `${Date.now()}`;
-    const _doc = {
-      id: id,
-      title: title,
-      html: html,
-      css: css,
-      js: js,
-      output: output,
-      user: user,
-    };
+  //   const saveProgram = async () => {
+  //     const id = `${Date.now()}`;
+  //     const _doc = {
+  //       id: id,
+  //       title: title,
+  //       html: html,
+  //       css: css,
+  //       js: js,
+  //       output: output,
+  //       user: user,
+  //     };
 
-    await setDoc(doc(db, "Projects", id), _doc)
-      .then((res) => {
-        setAlert(true);
-      })
-      .catch((err) => console.log(err));
+  //     await setDoc(doc(db, "Projects", id), _doc)
+  //       .then((res) => {
+  //         setAlert(true);
+  //       })
+  //       .catch((err) => console.log(err));
 
-    setInterval(() => {
-      setAlert(false);
-    }, 2000);
-  };
+  //     setInterval(() => {
+  //       setAlert(false);
+  //     }, 2000);
+  //   };
 
   const updateOutput = () => {
     const combinedOutput = `
@@ -121,7 +123,7 @@ const NewProject = () => {
                   )}
                 </AnimatePresence>
 
-                <AnimatePresence>
+                {/* <AnimatePresence>
                   {isTitle ? (
                     <>
                       <motion.div
@@ -145,7 +147,7 @@ const NewProject = () => {
                       </motion.div>
                     </>
                   )}
-                </AnimatePresence>
+                </AnimatePresence> */}
               </div>
               <div className="flex items-center justify-center px-3 -mt-2 gap-2">
                 <p className=" text-primaryText text-sm">
@@ -164,13 +166,13 @@ const NewProject = () => {
           </div>
           {user && (
             <div className=" flex items-center justify-center gap-4">
-              <motion.button
+              {/* <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={saveProgram}
                 className=" px-3 py-2 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
               >
                 Save
-              </motion.button>
+              </motion.button> */}
               <UserProfileDetails />
             </div>
           )}
@@ -283,4 +285,4 @@ const NewProject = () => {
   );
 };
 
-export default NewProject;
+export default ViewProject;

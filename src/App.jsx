@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Home, NewProject } from "./containers";
 import { auth, db } from "./config/firebase.config";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+} from "firebase/firestore";
 import { Spinner } from "./components";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "./context/actions/userActions";
+import { SET_PROJECTS } from "./context/actions/projectActions";
+import ViewProject from "./containers/ViewProject";
 
 const App = () => {
   const navigate = useNavigate();
@@ -36,6 +45,21 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const projectQuery = query(
+      collection(db, "Projects"),
+      orderBy("id", "desc")
+    );
+
+    const unsubscribe = onSnapshot(projectQuery, (querySnaps) => {
+      const projectList = querySnaps.docs.map((doc) => doc.data());
+      console.log(projectList);
+      dispatch(SET_PROJECTS(projectList));
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <>
       {isLoading ? (
@@ -47,6 +71,7 @@ const App = () => {
           <Routes>
             <Route path="/home/*" element={<Home />} />
             <Route path="/newProject" element={<NewProject />} />
+            <Route path="/viewProject" element={<ViewProject />} />
             <Route path="*" element={<Navigate to={"/home"} />} />
           </Routes>
         </div>
