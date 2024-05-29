@@ -51,15 +51,13 @@ const Home = () => {
 
           {/* home navigation  */}
 
-          {user && (
-            <Link
-              to={"/home/projects"}
-              className="flex items-center justify-center gap-2"
-            >
-              <MdHome className="text-primaryText text-xl" />
-              <p className="text-lg text-primaryText">Home</p>
-            </Link>
-          )}
+          <Link
+            to={"/home/projects"}
+            className="flex items-center justify-center gap-2"
+          >
+            <MdHome className="text-primaryText text-xl" />
+            <p className="text-lg text-primaryText">Home</p>
+          </Link>
         </div>
       </div>
       <div className="flex-1 min-h-screen max-h-screen overflow-y-scroll h-full flex flex-col items-start justify-start px-4 md:px-12 py-4 md:py-12">

@@ -33,7 +33,7 @@ const App = () => {
           }
         );
       } else {
-        navigate("home/auth", { replace: true });
+        navigate("home", { replace: true });
       }
 
       setInterval(() => {

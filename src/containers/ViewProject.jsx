@@ -31,6 +31,8 @@ const ViewProject = () => {
   const [title, setTitle] = useState(project?.title);
   const [alert, setAlert] = useState(false);
   const user = project?.user;
+  const loginUser = useSelector((state) => state.user?.user);
+  console.log(user);
 
   const navigate = useNavigate();
 
@@ -164,15 +166,8 @@ const ViewProject = () => {
               </div>
             </div>
           </div>
-          {user && (
+          {loginUser && (
             <div className=" flex items-center justify-center gap-4">
-              {/* <motion.button
-                whileTap={{ scale: 0.9 }}
-                onClick={saveProgram}
-                className=" px-3 py-2 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
-              >
-                Save
-              </motion.button> */}
               <UserProfileDetails />
             </div>
           )}
